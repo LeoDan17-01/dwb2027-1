@@ -4,12 +4,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.product.api.entity.Category;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/category")
-public class CtrlProduct {
+public class CtrlCategory {
     
     private final List<Category> categories = new ArrayList<>();
 

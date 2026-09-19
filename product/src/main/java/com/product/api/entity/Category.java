@@ -1,7 +1,11 @@
 package com.product.api.entity;
 
+@Entity
+@Table(name = "category")
 public class Category {
+    @Id
     private Integer category_id;
+    
     private String category;
     private String tag;
     private Integer parentCategoryId;
