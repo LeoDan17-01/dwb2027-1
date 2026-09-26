@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.product.api.entity.Category;
 import com.product.api.service.SvcCategory;
+import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,9 +19,9 @@ public class CtrlCategory {
     @Autowired
     SvcCategory svc;
     
-
+    // Actualizamos el controlador para que devuelva ResponseEntity<List<Category>> en lugar de List<Category>
     @GetMapping
-    public List<Category> getCategories() {
+    public ResponseEntity<List<Category>> getCategories() {
         return svc.getCategories();
     }
 }
