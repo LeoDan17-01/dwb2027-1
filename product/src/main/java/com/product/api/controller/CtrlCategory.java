@@ -21,7 +21,15 @@ public class CtrlCategory {
     
     // Actualizamos el controlador para que devuelva ResponseEntity<List<Category>> en lugar de List<Category>
     @GetMapping
-    public ResponseEntity<List<Category>> getCategories() {
-        return svc.getCategories();
+    public ResponseEntity<List<Category>> findAll() {
+        return svc.findAll();
     }
+
+    // Agregamos el endpoint para ver las categorias activas
+    @GetMapping("/active")
+    public ResponseEntity<List<Category>> findActive(){
+	return svc.findActive();
+}
+
+
 }

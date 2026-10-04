@@ -12,5 +12,8 @@ import java.util.List;
 public interface RepoCategory extends JpaRepository<Category, Integer> {
 
     @Query(value = "Select * from category order by category_id", nativeQuery = true)
-    List<Category> getCategories();
+    List<Category> findAll();
+
+    @Query(value = "Select * from category where status = 1 order by category_id", nativeQuery = true)
+    List<Category> findActive();
 }
