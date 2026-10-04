@@ -55,14 +55,7 @@ public class SvcCategoryImp implements SvcCategory {
     @Transactional 
     public ResponseEntity<Void> create(DtoCategoryIn in){
         try{
-            Category category = new Category();
-            category.setCategory(in.getCategory());
-            category.setTag(in.getTag());
-            category.setParentCategoryId(in.getParentCategoryId());
-            category.setStatus(1); 
-
-            repo.save(category);
-
+            repo.create(in.getCategory(), in.getTag());
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (DataAccessException e){
             throw new DBAccessException(e);

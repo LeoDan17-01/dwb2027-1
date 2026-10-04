@@ -3,7 +3,10 @@ package com.product.api.controller;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,11 +40,25 @@ public class CtrlCategory {
 	return svc.findActive();
     }
 
-     // Agregamos el endpoint para crear categorias    
+     // Agregamos los endpoints para implementar el CRUD  
     @PostMapping
     public ResponseEntity<Void> create(@Valid @RequestBody DtoCategoryIn in){
         return svc.create(in);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@Valid @RequestBody DtoCategoryIn in, @PathVariable Integer id){
+        return svc.update(in, id);
+    }
+
+    @PatchMapping("/{id}/enable")
+    public ResponseEntity<Void> enable(@PathVariable Integer id) {
+        return svc.enable(id);
+    }
+
+    @PatchMapping("/{id}/disable")
+    public ResponseEntity<Void> disable(@PathVariable Integer id) {
+        return svc.disable(id);
+    }
 
 }

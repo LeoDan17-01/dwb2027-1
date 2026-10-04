@@ -18,9 +18,9 @@ public interface SvcCategory {
 
     ResponseEntity<Void> create(DtoCategoryIn in);
     
-    //ResponseEntity<Void> update(DtoCategoryIn in, Integer id);
+    ResponseEntity<Void> update(DtoCategoryIn in, Integer id);
     
-    //ResponseEntity<Void> enable(Integer id);
+    ResponseEntity<Void> enable(Integer id);
     
-    //ResponseEntity<Void> disable(Integer id);
+    ResponseEntity<Void> disable(Integer id);
 }
