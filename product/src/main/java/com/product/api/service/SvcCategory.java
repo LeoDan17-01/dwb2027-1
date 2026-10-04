@@ -14,7 +14,7 @@ public interface SvcCategory {
     //Agreamos los nuevos metodos
     ResponseEntity<List<Category>> findActive();
 
-    //ResponseEntity<List<Category>> findChilds(Integer id);
+    ResponseEntity<List<Category>> findChilds(Integer id);
 
     ResponseEntity<Void> create(DtoCategoryIn in);
     
