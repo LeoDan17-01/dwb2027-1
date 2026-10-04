@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.product.api.dto.DtoCategoryIn;
 import com.product.api.entity.Category;
 import com.product.api.repository.RepoCategory;
 import com.product.exception.ApiException;
@@ -37,4 +38,14 @@ public class SvcCategoryImp implements SvcCategory {
         }
     } 
     
+    //Pendiente por hacer
+    @Override 
+    public ResponseEntity<Void> create(DtoCategoryIn in){
+        try{
+            //return new ResponseEntity<>(repo.create(in), HttpStatus.OK);
+            return null;
+        }catch (Exception e){
+            throw new ApiException("Error al crear categoria", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

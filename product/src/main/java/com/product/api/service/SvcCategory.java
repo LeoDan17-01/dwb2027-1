@@ -16,7 +16,7 @@ public interface SvcCategory {
 
     //ResponseEntity<List<Category>> findChilds(Integer id);
 
-    //ResponseEntity<Void> create(DtoCategoryIn in);
+    ResponseEntity<Void> create(DtoCategoryIn in);
     
     //ResponseEntity<Void> update(DtoCategoryIn in, Integer id);
     
