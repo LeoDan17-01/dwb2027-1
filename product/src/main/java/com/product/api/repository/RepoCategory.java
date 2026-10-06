@@ -33,7 +33,19 @@ public interface RepoCategory extends JpaRepository<Category, Integer> {
     // Consulta para crear una categoria
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
-    @Query(value = "INSERT INTO region(region, tag, status) VALUES (:region, :tag, 1)", nativeQuery = true)
-    void create(@Param("region") String region, @Param("tag") String tag);
+    @Query(value = "INSERT INTO category(category, tag, status) VALUES (:category, :tag, 1)", nativeQuery = true)
+    void create(@Param("category") String category, @Param("tag") String tag);
+
+    // Consulta para actualizar una categoria
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Transactional
+    @Query(value ="UPDATE category SET category = :category, tag = :tag WHERE category_id = :category_id", nativeQuery = true)
+    void update(@Param("category_id") Integer category_id, @Param("category") String category, @Param("tag") String tag);
+
+    // Consulta para cambiar el estatus de una categoria
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Transactional
+    @Query(value ="UPDATE category SET status = :status WHERE category_id = :category_id", nativeQuery = true)
+    void updateStatus(@Param("category_id") Integer category_id, @Param("status") Integer status);
 
 }

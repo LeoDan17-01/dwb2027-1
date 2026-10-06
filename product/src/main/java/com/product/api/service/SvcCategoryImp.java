@@ -58,7 +58,56 @@ public class SvcCategoryImp implements SvcCategory {
             repo.create(in.getCategory(), in.getTag());
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (DataAccessException e){
+            if (e.getLocalizedMessage().contains("ux_region"))
+                throw new ApiException("El nombre de la región ya está registrado", HttpStatus.CONFLICT);
+            if (e.getLocalizedMessage().contains("ux_tag"))
+                throw new ApiException("El tag de la región ya está registrado", HttpStatus.CONFLICT);
             throw new DBAccessException(e);
         }
     }
+
+    //Agreamos el metodo para actualizar categorias
+    @Transactional
+    public ResponseEntity<Void> update(DtoCategoryIn in, Integer id){
+        try{
+            repo.update(id, in.getCategory(), in.getTag());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (DataAccessException e){
+            if(repo.findById(id).isEmpty())
+	            throw new ApiException("El id de la región no existe", HttpStatus.NOT_FOUND);
+            throw new DBAccessException(e);
+        }
+    }
+
+    // Metodo auxiliar para validar que la categoria existe
+    private void validateRegionId(Integer id) {
+        if (repo.findById(id).isEmpty()) {
+            throw new ApiException("El id de la región no existe", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // Agregamos el metodo para cambiar el estatus de una categoria
+    @Transactional
+    public ResponseEntity<Void> enable(Integer id){
+        try{
+            // Llamamos al metodo auxiliar para validar que la categoria existe
+            validateRegionId(id);
+            repo.updateStatus(id, 1);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (DataAccessException e){
+            throw new DBAccessException(e);
+        }
+    }
+
+    @Transactional
+    public ResponseEntity<Void> disable(Integer id){
+        try{
+            validateRegionId(id);
+            repo.updateStatus(id, 0);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (DataAccessException e){
+            throw new DBAccessException(e);
+        }
+    }
+
 }
