@@ -6,6 +6,7 @@ import com.product.api.dto.DtoCategoryIn;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Objects;
 
 // Cambiamos a ResponseEntity
 public interface SvcCategory {

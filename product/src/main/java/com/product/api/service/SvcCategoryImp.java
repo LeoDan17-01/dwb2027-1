@@ -15,6 +15,7 @@ import com.product.exception.DBAccessException;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class SvcCategoryImp implements SvcCategory {
@@ -44,7 +45,8 @@ public class SvcCategoryImp implements SvcCategory {
 
     @Override 
     public ResponseEntity<List<Category>> findChilds(Integer id){
-        try{
+        try {
+            validateRegionId(id);
             return new ResponseEntity<>(repo.findChilds(id), HttpStatus.OK);
         } catch (DataAccessException e) {
             throw new DBAccessException(e);
@@ -55,7 +57,20 @@ public class SvcCategoryImp implements SvcCategory {
     @Transactional 
     public ResponseEntity<Void> create(DtoCategoryIn in){
         try{
-            repo.create(in.getCategory(), in.getTag());
+
+            if (repo.existsByCategory(in.getCategory()))
+                throw new ApiException("El nombre de la categoría ya está registrado", HttpStatus.CONFLICT);
+
+            if (repo.existsByTag(in.getTag()))
+                throw new ApiException("El tag de la categoría ya está registrado", HttpStatus.CONFLICT);
+
+            if (in.getParentCategoryId() != null) {
+                repo.findActiveById(in.getParentCategoryId())
+                    .orElseThrow(() -> new ApiException(
+                        "La categoría padre no existe o no está activa", 
+                        HttpStatus.NOT_FOUND));
+            }
+            repo.create(in.getCategory(), in.getTag(), in.getParentCategoryId());
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (DataAccessException e){
             if (e.getLocalizedMessage().contains("ux_region"))
@@ -70,11 +85,32 @@ public class SvcCategoryImp implements SvcCategory {
     @Transactional
     public ResponseEntity<Void> update(DtoCategoryIn in, Integer id){
         try{
-            repo.update(id, in.getCategory(), in.getTag());
+            validateRegionId(id);
+
+            Category actual = repo.findById(id).orElseThrow(() ->
+                new ApiException("El id de la categoría no existe", HttpStatus.NOT_FOUND));
+
+            if (!Objects.equals(actual.getCategory(), in.getCategory())
+                    && repo.existsByCategory(in.getCategory()))
+                throw new ApiException("El nombre de la categoría ya está registrado", HttpStatus.CONFLICT);
+
+            if (!Objects.equals(actual.getTag(), in.getTag())
+                    && repo.existsByTag(in.getTag()))
+                throw new ApiException("El tag de la categoría ya está registrado", HttpStatus.CONFLICT);
+
+            if (in.getParentCategoryId() != null && in.getParentCategoryId().equals(id))
+                throw new ApiException("Una categoría no puede ser padre de sí misma", HttpStatus.CONFLICT);
+
+            if (in.getParentCategoryId() != null) {
+                repo.findActiveById(in.getParentCategoryId())
+                    .orElseThrow(() -> new ApiException(
+                        "La categoría padre no existe o no está activa",
+                        HttpStatus.NOT_FOUND));
+            }
+
+            repo.update(id, in.getCategory(), in.getTag(), in.getParentCategoryId());
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (DataAccessException e){
-            if(repo.findById(id).isEmpty())
-	            throw new ApiException("El id de la región no existe", HttpStatus.NOT_FOUND);
             throw new DBAccessException(e);
         }
     }
@@ -103,6 +139,10 @@ public class SvcCategoryImp implements SvcCategory {
     public ResponseEntity<Void> disable(Integer id){
         try{
             validateRegionId(id);
+            if (repo.hasChildren(id))
+                throw new ApiException(
+                    "No es posible deshabilitar una categoría que tiene categorías hijas",
+                    HttpStatus.CONFLICT);
             repo.updateStatus(id, 0);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (DataAccessException e){
