@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.product.api.dto.in.DtoProductImageIn;
 import com.product.api.dto.out.DtoProductImageOut;
+import com.product.api.service.SvcProductImage;
 
 import jakarta.validation.Valid;
 
