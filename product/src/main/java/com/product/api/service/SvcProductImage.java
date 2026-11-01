@@ -8,7 +8,7 @@ import com.product.api.dto.out.DtoProductImageOut;
 
 public interface SvcProductImage {
     
-    List<DtoProductImageOut> getProductImages(Integer productId);
+    ResponseEntity<List<DtoProductImageOut>> getProductImages(Integer productId);
 
     ResponseEntity<String> createProductImage(Integer productId, Object in);
 

@@ -19,7 +19,7 @@ public class SvcProductImageImp implements SvcProductImage {
 	RepoProductImage repo;
 
     @Override 
-    public List<DtoProductImageOut> getProductImages(Integer productId) {
+    public ResponseEntity<List<DtoProductImageOut>> getProductImages(Integer productId) {
         return null;
     }
     
