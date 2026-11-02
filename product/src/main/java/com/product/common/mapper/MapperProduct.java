@@ -7,15 +7,16 @@ import org.springframework.stereotype.Service;
 
 import com.product.api.dto.in.DtoProductIn;
 import com.product.api.dto.out.DtoProductListOut;
+import com.product.api.dto.out.DtoProductOut;
 import com.product.api.entity.Product;
 
 @Service
 public class MapperProduct {
 	
 	public List<DtoProductListOut> fromProductList(List<Product> products){
-		List<DtoProductListOut> list = new ArrayList<>();
+		List<DtoProductListOut> listproducts = new ArrayList<>();
 		for(Product product: products) {
-			list.add(new DtoProductListOut(
+			listproducts.add(new DtoProductListOut(
 					product.getProduct_id(),
 					product.getGtin(),
 					product.getProduct(),
@@ -23,7 +24,7 @@ public class MapperProduct {
 					product.getStatus()
 					));
 		}
-		return list;
+		return listproducts;
 	}
 
 	public Product fromDto(DtoProductIn dto) {
@@ -43,6 +44,19 @@ public class MapperProduct {
 		Product product = fromDto(dto);
 		product.setProduct_id(id);
 		return product;
+	}
+
+	public DtoProductOut fromProduct(Product product){
+		DtoProductOut out = new DtoProductOut();
+		out.setProduct_id(product.getProduct_id());
+		out.setGtin(product.getGtin());
+		out.setProduct(product.getProduct());
+		out.setDescription(product.getDescription());
+		out.setPrice(product.getPrice());
+		out.setStock(product.getStock());
+		out.setCategory_id(product.getCategory_id());
+		out.setStatus(product.getStatus());
+		return out;
 	}
 	
 }
