@@ -13,7 +13,7 @@ public interface SvcCategory {
     ResponseEntity<List<Category>> findAll();
 
     //Agreamos los nuevos metodos
-    List<Category> findActive();
+    ResponseEntity<List<Category>> findActive();
 
     ResponseEntity<List<Category>> findChilds(Integer id);
 
