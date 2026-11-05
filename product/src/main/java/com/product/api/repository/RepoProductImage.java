@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.product.api.dto.out.DtoProductImageOut;
 import com.product.api.dto.out.DtoProductOut;
 import com.product.api.entity.ProductImage;
 
@@ -25,7 +26,7 @@ public interface RepoProductImage extends JpaRepository<ProductImage, Integer> {
     + "INNER JOIN region r ON r.region_id = c.region_id "
     + "INNER JOIN product_image ci ON ci.product_id = c.product_id "
         + "WHERE c.product_id = :product_id;", nativeQuery = true)
-    DtoProductOut getProduct(@Param("product_id") Integer product_id);
+    List<DtoProductImageOut> getProducts(@Param("product_id") Integer productId);
 
 
 }

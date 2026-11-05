@@ -34,7 +34,45 @@ public class SvcProductImageImp implements SvcProductImage {
 
     @Override 
     public ResponseEntity<List<DtoProductImageOut>> getProductImages(Integer productId) {
-        return null;
+        // Validar si el productId existe
+        try{
+            validateProductId(productId);
+            List<DtoProductImageOut> productImages = repo.getProducts(productId);
+
+            for(DtoProductImageOut productImage : productImages) {
+                if(productImage.getImage() != null){
+                    productImage.setImage(readProductImageFile(productImage.getImage()));
+                }
+            }
+            return new ResponseEntity<>(productImages, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            throw new DBAccessException(e);
+        }
+    }
+
+    private String readProductImageFile(String imageUrl) {
+        try {
+   
+            // Si la URL comienza con "/" la eliminamos para obtener la ruta relativa
+            if (imageUrl.startsWith("/")) {
+                imageUrl = imageUrl.substring(1);
+            }
+ 
+            // Construir el Path
+            Path imagePath = Paths.get(uploadDir, uploadImages, imageUrl);
+ 
+            // Verifica que el archivo exista
+            if (!Files.exists(imagePath)){
+                return "";
+            }
+ 
+            // Leer los bytes de la imagen y codificarlos a Base64
+            byte[] imageBytes = Files.readAllBytes(imagePath);
+            return Base64.getEncoder().encodeToString(imageBytes);
+   
+        }catch (IOException e) {
+            throw new ApiException("Error al leer el archivo",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     
     @Override 
