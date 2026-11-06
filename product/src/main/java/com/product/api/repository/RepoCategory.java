@@ -32,11 +32,11 @@ public interface RepoCategory extends JpaRepository<Category, Integer> {
     List<Category> findChilds(@Param("id") Integer id);
 
     // Se verifica que el nombre no se duplique
-    @Query(value = "SELECT COUNT(c) > 0 FROM category c WHERE c.category = :category", nativeQuery = true)
+    @Query(value = "SELECT EXISTS(SELECT 1 FROM category WHERE category = :category)", nativeQuery = true)
     boolean existsByCategory(@Param("category") String category);
 
     // Se verifica que el tag no se duplique
-    @Query(value = "SELECT COUNT(c) > 0 FROM category c WHERE c.tag = :tag", nativeQuery = true)
+    @Query(value = "SELECT EXISTS(SELECT 1 FROM category WHERE tag = :tag)", nativeQuery = true)
     boolean existsByTag(@Param("tag") String tag);
 
     // El padre debe existir y estar activo
@@ -44,7 +44,7 @@ public interface RepoCategory extends JpaRepository<Category, Integer> {
     Optional<Category> findActiveById(@Param("id") Integer id);
 
     // Se verifica si la categoria tiene hijos
-    @Query(value = "SELECT COUNT(c) > 0 FROM category c WHERE c.parent_category_id = :id", nativeQuery = true)
+    @Query(value = "SELECT EXISTS(SELECT 1 FROM category WHERE parent_category_id = :id)", nativeQuery = true)
     boolean hasChildren(@Param("id") Integer id);
 
     // Consulta para crear una categoria

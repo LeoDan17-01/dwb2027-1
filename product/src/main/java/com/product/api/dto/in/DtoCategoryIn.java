@@ -1,4 +1,4 @@
-package com.product.api.dto;
+package com.product.api.dto.in;
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -46,5 +46,4 @@ public class DtoCategoryIn {
     public void setParentCategoryId(Integer parentCategoryId) {
         this.parentCategoryId = parentCategoryId;
     }
-
 }

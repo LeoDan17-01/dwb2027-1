@@ -16,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 
 import com.product.api.entity.Category;
 import com.product.api.service.SvcCategory;
-import com.product.api.dto.DtoCategoryIn;
+import com.product.api.dto.in.DtoCategoryIn;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class CtrlCategory {
     // Agregamos el endpoint para ver las categorias activas
     @GetMapping("/active")
     public ResponseEntity<List<Category>> findActive(){
-	return svc.findActive();
+	    return svc.findActive();
     }
 
      // Agregamos los endpoints para implementar el CRUD  
@@ -59,6 +59,11 @@ public class CtrlCategory {
     @PatchMapping("/{id}/disable")
     public ResponseEntity<Void> disable(@PathVariable Integer id) {
         return svc.disable(id);
+    }
+
+    @GetMapping("/{id}/childs")
+    public ResponseEntity<List<Category>> findChilds(@PathVariable Integer id) {
+        return svc.findChilds(id);
     }
 
 }
