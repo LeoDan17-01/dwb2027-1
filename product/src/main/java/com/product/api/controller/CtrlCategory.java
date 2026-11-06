@@ -16,11 +16,7 @@ import org.springframework.validation.annotation.Validated;
 
 import com.product.api.entity.Category;
 import com.product.api.service.SvcCategory;
-<<<<<<< HEAD
 import com.product.api.dto.in.DtoCategoryIn;
-=======
-import com.product.api.dto.DtoCategoryIn;
->>>>>>> p5_crud-category
 
 import java.util.List;
 
@@ -63,6 +59,11 @@ public class CtrlCategory {
     @PatchMapping("/{id}/disable")
     public ResponseEntity<Void> disable(@PathVariable Integer id) {
         return svc.disable(id);
+    }
+
+    @GetMapping("/{id}/childs")
+    public ResponseEntity<List<Category>> findChilds(@PathVariable Integer id) {
+        return svc.findChilds(id);
     }
 
 }
