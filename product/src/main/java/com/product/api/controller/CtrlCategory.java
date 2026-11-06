@@ -16,7 +16,11 @@ import org.springframework.validation.annotation.Validated;
 
 import com.product.api.entity.Category;
 import com.product.api.service.SvcCategory;
+<<<<<<< HEAD
 import com.product.api.dto.in.DtoCategoryIn;
+=======
+import com.product.api.dto.DtoCategoryIn;
+>>>>>>> p5_crud-category
 
 import java.util.List;
 
